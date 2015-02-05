@@ -37,3 +37,26 @@ def test_permanent():
     assert status == '302 Found'
     assert headers['Location'].startswith('https://')
 
+def test_hsts_defaults():
+    app = sslify(testapp.test_app)
+    env = create_environ()
+    env['wsgi.url_scheme'] = 'https'
+    app_iter, status, headers = run_wsgi_app(app, env)
+    assert status == '200 OK'
+    assert headers['Strict-Transport-Security'] == 'max-age=31536000'
+
+def test_hsts_off():
+    app = sslify(testapp.test_app, hsts=False)
+    env = create_environ()
+    env['wsgi.url_scheme'] = 'https'
+    app_iter, status, headers = run_wsgi_app(app, env)
+    assert status == '200 OK'
+    assert 'Strict-Transport-Security' not in headers
+
+def test_hsts_subdomains():
+    app = sslify(testapp.test_app, subdomains=True)
+    env = create_environ()
+    env['wsgi.url_scheme'] = 'https'
+    app_iter, status, headers = run_wsgi_app(app, env)
+    assert status == '200 OK'
+    assert headers['Strict-Transport-Security'] == 'max-age=31536000; includeSubDomains'

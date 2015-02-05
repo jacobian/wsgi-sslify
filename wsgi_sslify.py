@@ -14,7 +14,17 @@ class sslify(object):
 
     def __call__(self, environ, start_response):
         if self.is_secure(environ):
-            return self.app(environ, start_response)
+            if self.hsts:
+                def wrapped_start_response(status, headers, exc_info=None):
+                    hsts_policy = 'max-age=%s' % self.max_age
+                    if self.subdomains:
+                        hsts_policy += '; includeSubDomains'
+                    headers.append(('Strict-Transport-Security', hsts_policy))
+                    return start_response(status, headers, exc_info)
+                return self.app(environ, wrapped_start_response)
+            else:
+                return self.app(environ, start_response)
+        
         else:
             headers = [('Location', self.construct_secure_url(environ))]
             if self.permanent:
@@ -39,4 +49,4 @@ class sslify(object):
         url = werkzeug.wsgi.get_current_url(environ)
         if url.startswith('http://'):
             url = 'https://' + url[7:]
-        return url
+        return url        
