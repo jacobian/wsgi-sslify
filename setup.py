@@ -3,7 +3,7 @@ from setuptools import setup
 setup(
     name = "wsgi-sslify",
     description = "WSGI middleware to force HTTPS.",
-    version = "1.0",
+    version = "1.0.1",
     author = "Jacob Kaplan-Moss",
     author_email = "jacob@jacobian.org",
     url = "http://github.com/jacobian/wsgi-sslify",
