@@ -1,8 +1,15 @@
 import werkzeug.wsgi
 
+YEAR_IN_SECS = 31536000
+
 class sslify(object):
-    def __init__(self, app, hsts=True, proxy_header='X-Forwarded-Proto'):
+    def __init__(self, app, hsts=True, max_age=YEAR_IN_SECS, subdomains=False,
+                 permanent=True, proxy_header='X-Forwarded-Proto'):
         self.app = app
+        self.hsts = hsts
+        self.max_age = max_age
+        self.subdomains = subdomains
+        self.permanent = permanent
         self.proxy_header = proxy_header
 
     def __call__(self, environ, start_response):
@@ -10,7 +17,11 @@ class sslify(object):
             return self.app(environ, start_response)
         else:
             headers = [('Location', self.construct_secure_url(environ))]
-            start_response('301 Moved Permanently', headers)
+            if self.permanent:
+                status = '301 Moved Permanently'
+            else:
+                status = '302 Found'
+            start_response(status, headers)
             return []
 
     def is_secure(self, environ):
