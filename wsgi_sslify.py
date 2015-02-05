@@ -1,3 +1,4 @@
+import werkzeug.urls
 import werkzeug.wsgi
 
 YEAR_IN_SECS = 31536000
@@ -47,6 +48,7 @@ class sslify(object):
 
     def construct_secure_url(self, environ):
         url = werkzeug.wsgi.get_current_url(environ)
+        url = werkzeug.urls.iri_to_uri(url)
         if url.startswith('http://'):
             url = 'https://' + url[7:]
-        return url        
+        return url
