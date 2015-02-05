@@ -51,4 +51,4 @@ class sslify(object):
         url = werkzeug.urls.iri_to_uri(url)
         if url.startswith('http://'):
             url = 'https://' + url[7:]
-        return url        
+        return url
