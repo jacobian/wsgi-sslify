@@ -47,3 +47,9 @@ You can pass some keyword arguments to `sslify` to control its behavior:
 
 * `proxy_header` (default: `X-Forwarded-Proto`) - for services behind a proxy,
   this is the name of the header that contains the *real* request scheme.
+
+## Contributing
+
+Testing: use [py.test](http://pytest.org).
+
+Contributing: send me pull requests.
