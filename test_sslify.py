@@ -60,3 +60,4 @@ def test_hsts_subdomains():
     app_iter, status, headers = run_wsgi_app(app, env)
     assert status == '200 OK'
     assert headers['Strict-Transport-Security'] == 'max-age=31536000; includeSubDomains'
+
