@@ -17,6 +17,7 @@ def test_https_doesnt_redirect():
     env['wsgi.url_scheme'] = 'https'
     app_iter, status, headers = run_wsgi_app(app, env)
     assert status == '200 OK'
+    assert headers['Strict-Transport-Security'] == 'max-age=31536000'
 
 
 def test_https_proxy_doesnt_redirect():
@@ -25,6 +26,7 @@ def test_https_proxy_doesnt_redirect():
     env['HTTP_X_FORWARDED_PROTO'] = 'https'
     app_iter, status, headers = run_wsgi_app(app, env)
     assert status == '200 OK'
+    assert headers['Strict-Transport-Security'] == 'max-age=31536000'
 
 
 def test_https_proxy_header_disabled():
@@ -59,15 +61,6 @@ def test_permanent():
     app_iter, status, headers = run_wsgi_app(app, env)
     assert status == '302 Found'
     assert headers['Location'].startswith('https://')
-
-
-def test_hsts_defaults():
-    app = sslify(testapp.test_app)
-    env = create_environ()
-    env['wsgi.url_scheme'] = 'https'
-    app_iter, status, headers = run_wsgi_app(app, env)
-    assert status == '200 OK'
-    assert headers['Strict-Transport-Security'] == 'max-age=31536000'
 
 
 def test_hsts_off():
