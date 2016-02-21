@@ -6,7 +6,7 @@ setup(
     version = "1.0.1",
     author = "Jacob Kaplan-Moss",
     author_email = "jacob@jacobian.org",
-    url = "http://github.com/jacobian/wsgi-sslify",
+    url = "https://github.com/jacobian/wsgi-sslify",
     py_modules = ['wsgi_sslify'],
     install_requires = ['werkzeug>=0.10.1'],
     classifiers = [
