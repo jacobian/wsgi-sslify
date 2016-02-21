@@ -79,6 +79,15 @@ def test_hsts_off():
     assert 'Strict-Transport-Security' not in headers
 
 
+def test_hsts_custom_max_age():
+    app = sslify(testapp.test_app, max_age=60)
+    env = create_environ()
+    env['wsgi.url_scheme'] = 'https'
+    app_iter, status, headers = run_wsgi_app(app, env)
+    assert status == '200 OK'
+    assert headers['Strict-Transport-Security'] == 'max-age=60'
+
+
 def test_hsts_subdomains():
     app = sslify(testapp.test_app, subdomains=True)
     env = create_environ()
