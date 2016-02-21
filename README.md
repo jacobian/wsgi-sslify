@@ -1,5 +1,7 @@
 # WSGI-SSLify
 
+[![Build Status](https://travis-ci.org/jacobian/wsgi-sslify.svg?branch=master)](https://travis-ci.org/jacobian/wsgi-sslify)
+
 ![](ssl-all-the-things.jpg)
 
 (Yes, I know "TLS" would be more accurate. Deal with it.)
