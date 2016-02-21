@@ -27,12 +27,30 @@ def test_https_proxy_doesnt_redirect():
     assert status == '200 OK'
 
 
+def test_https_proxy_header_disabled():
+    app = sslify(testapp.test_app, proxy_header=None)
+    env = create_environ()
+    env['HTTP_X_FORWARDED_PROTO'] = 'https'
+    app_iter, status, headers = run_wsgi_app(app, env)
+    assert status == '301 Moved Permanently'
+    assert headers['Location'].startswith('https://')
+
+
 def test_https_proxy_custom_header():
     app = sslify(testapp.test_app, proxy_header='X-PROTO')
     env = create_environ()
     env['HTTP_X_PROTO'] = 'https'
     app_iter, status, headers = run_wsgi_app(app, env)
     assert status == '200 OK'
+
+
+def test_https_proxy_custom_header_ignores_default_header():
+    app = sslify(testapp.test_app, proxy_header='X-PROTO')
+    env = create_environ()
+    env['HTTP_X_FORWARDED_PROTO'] = 'https'
+    app_iter, status, headers = run_wsgi_app(app, env)
+    assert status == '301 Moved Permanently'
+    assert headers['Location'].startswith('https://')
 
 
 def test_permanent():
