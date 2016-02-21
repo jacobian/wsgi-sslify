@@ -3,6 +3,7 @@ import werkzeug.wsgi
 
 YEAR_IN_SECS = 31536000
 
+
 class sslify(object):
     def __init__(self, app, hsts=True, max_age=YEAR_IN_SECS, subdomains=False,
                  permanent=True, proxy_header='X-Forwarded-Proto'):
@@ -25,7 +26,7 @@ class sslify(object):
                 return self.app(environ, wrapped_start_response)
             else:
                 return self.app(environ, start_response)
-        
+
         else:
             headers = [('Location', self.construct_secure_url(environ))]
             if self.permanent:
@@ -38,7 +39,7 @@ class sslify(object):
     def is_secure(self, environ):
         if environ.get('wsgi.url_scheme', 'http') == 'https':
             return True
-        
+
         if self.proxy_header:
             header = 'HTTP_' + self.proxy_header.upper().replace('-', '_')
             if environ.get(header, 'http') == 'https':
