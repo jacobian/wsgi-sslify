@@ -50,6 +50,14 @@ You can pass some keyword arguments to `sslify` to control its behavior:
 * `proxy_header` (default: `X-Forwarded-Proto`) - for services behind a proxy,
   this is the name of the header that contains the *real* request scheme.
 
+## Changes
+
+1.0.1
+* Use werkzeug to ensure the URL is always bytes (#1).
+
+1.0
+* Initial release.
+
 ## Contributing
 
 To run the tests:
