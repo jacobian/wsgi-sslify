@@ -1,5 +1,7 @@
 # WSGI-SSLify
 
+[![Build Status](https://travis-ci.org/jacobian/wsgi-sslify.svg?branch=master)](https://travis-ci.org/jacobian/wsgi-sslify)
+
 ![](ssl-all-the-things.jpg)
 
 (Yes, I know "TLS" would be more accurate. Deal with it.)
@@ -50,6 +52,11 @@ You can pass some keyword arguments to `sslify` to control its behavior:
 
 ## Contributing
 
-Testing: use [py.test](http://pytest.org).
+To run the tests:
+* Optional (but recommended): Create/activate a virtualenv.
+* $ `pip install -r dev-requirements.txt`
+* $ `py.test`
+
+See the [py.test](https://pytest.org/) docs for more options.
 
 Contributing: send me pull requests.
